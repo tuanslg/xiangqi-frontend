@@ -26,3 +26,7 @@ dist-ssr
 # Pikafish binary + NNUE (fetched by packages/server/scripts/fetch-pikafish.sh)
 packages/server/engine/pikafish
 packages/server/engine/pikafish.nnue
+
+# server
+packages/server/engine
+.env
