@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/write-headers.mjs",
     "lint": "oxlint",
     "test": "vitest run",
     "preview": "vite preview",
-    "typecheck": "tsc -b && npm run typecheck -w @xiangqi/shared --if-present"
+    "typecheck": "tsc -b && npm run typecheck -w @xiangqi/shared -w @xiangqi/server",
+    "dev:server": "npm run dev -w @xiangqi/server",
+    "engine:fetch": "npm run engine:fetch -w @xiangqi/server"
   },
   "dependencies": {
     "@fontsource/lxgw-wenkai-tc": "^5.3.1",
