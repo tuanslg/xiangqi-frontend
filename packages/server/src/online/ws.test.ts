@@ -9,7 +9,7 @@ import { Hub } from './hub'
 const config: Config = {
   port: 0, host: '127.0.0.1', allowedOrigins: ['http://app.example'], pikafishPath: '', pikafishEval: '',
   poolSize: 1, maxQueue: 1, hashMb: 1, threads: 1, trustProxy: false, bestMoveRatePerMin: 1000,
-  databaseUrl: null, googleClientId: null, cookieSecure: false, maxConnsPerIp: 3,
+  databaseUrl: null, googleClientId: null, cookieSecure: false, maxConnsPerIp: 3, webDir: null,
 }
 
 let app: FastifyInstance

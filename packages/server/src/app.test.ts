@@ -10,7 +10,7 @@ import type { Candidate } from './engine/uciEngine'
 
 const config: Config = {
   port: 0, host: '127.0.0.1', allowedOrigins: [], pikafishPath: '', pikafishEval: '',
-  poolSize: 1, maxQueue: 1, hashMb: 1, threads: 1, trustProxy: false, bestMoveRatePerMin: 1000, databaseUrl: null, googleClientId: null, cookieSecure: false, maxConnsPerIp: 20,
+  poolSize: 1, maxQueue: 1, hashMb: 1, threads: 1, trustProxy: false, bestMoveRatePerMin: 1000, databaseUrl: null, googleClientId: null, cookieSecure: false, maxConnsPerIp: 20, webDir: null,
 }
 
 let handler: (r: SearchRequest) => Promise<Candidate[]>
@@ -84,5 +84,36 @@ describe('misc routes', () => {
     expect((await app.inject('/api/health')).json()).toEqual({ status: 'ok' })
     const levels = (await app.inject('/api/levels')).json()
     expect(levels.map((l: { id: number }) => l.id)).toEqual([1, 2, 3, 4])
+  })
+})
+
+describe('static frontend', () => {
+  it('serves the built site with sensible caching and does not shadow the API', async () => {
+    const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = await import('node:fs')
+    const { tmpdir } = await import('node:os')
+    const { join } = await import('node:path')
+    const dir = mkdtempSync(join(tmpdir(), 'xq-web-'))
+    try {
+      mkdirSync(join(dir, 'assets'))
+      writeFileSync(join(dir, 'index.html'), '<!doctype html><title>Cờ Tướng</title>')
+      writeFileSync(join(dir, 'assets', 'app-abc123.js'), 'console.log(1)')
+      const web = await buildApp({ config: { ...config, webDir: dir }, searcher })
+      try {
+        const index = await web.inject('/')
+        expect(index.statusCode).toBe(200)
+        expect(index.body).toContain('Cờ Tướng')
+        expect(index.headers['cache-control']).toBe('no-cache')
+        const asset = await web.inject('/assets/app-abc123.js')
+        expect(asset.headers['cache-control']).toBe('public, max-age=31536000, immutable')
+        expect((await web.inject('/api/health')).json()).toEqual({ status: 'ok' })
+        expect((await web.inject('/missing.txt')).statusCode).toBe(404)
+        // path traversal must not escape the web root
+        expect((await web.inject('/..%2f..%2fetc/passwd')).statusCode).toBeGreaterThanOrEqual(400)
+      } finally {
+        await web.close()
+      }
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 })

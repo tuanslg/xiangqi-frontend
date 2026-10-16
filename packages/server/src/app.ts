@@ -1,5 +1,6 @@
 import cookie from '@fastify/cookie'
 import cors from '@fastify/cors'
+import staticFiles from '@fastify/static'
 import rateLimit from '@fastify/rate-limit'
 import { allLegalMoves, fenProblem, parseFen, toUciFen } from '@xiangqi/shared'
 import Fastify from 'fastify'
@@ -115,6 +116,16 @@ export async function buildApp({ config, searcher, db, googleVerifier, hub, logg
       }
     },
   )
+
+  if (config.webDir) {
+    await app.register(staticFiles, {
+      root: config.webDir,
+      // Vite fingerprints everything under /assets, so it can be cached forever; the entry page must revalidate.
+      setHeaders: (reply, path) => {
+        reply.header('Cache-Control', path.includes('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache')
+      },
+    })
+  }
 
   return app
 }

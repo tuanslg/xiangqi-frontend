@@ -14,7 +14,7 @@ if (url && !/_test(\?|$)/.test(url)) throw new Error('TEST_DATABASE_URL must poi
 const config: Config = {
   port: 0, host: '127.0.0.1', allowedOrigins: ['http://app.example'], pikafishPath: '', pikafishEval: '',
   poolSize: 1, maxQueue: 1, hashMb: 1, threads: 1, trustProxy: false, bestMoveRatePerMin: 1000,
-  databaseUrl: url ?? null, googleClientId: 'client-id.apps.googleusercontent.com', cookieSecure: false, maxConnsPerIp: 20,
+  databaseUrl: url ?? null, googleClientId: 'client-id.apps.googleusercontent.com', cookieSecure: false, maxConnsPerIp: 20, webDir: null,
 }
 
 describe.skipIf(!url)('auth (Postgres)', () => {

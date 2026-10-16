@@ -36,6 +36,8 @@ export interface Config {
   cookieSecure: boolean
   /** Concurrent WebSocket connections allowed per client IP. */
   maxConnsPerIp: number
+  /** Directory with the built frontend to serve; null = API only (dev uses the Vite server). */
+  webDir: string | null
 }
 
 export function loadConfig(): Config {
@@ -54,6 +56,7 @@ export function loadConfig(): Config {
     databaseUrl: process.env.DATABASE_URL || null,
     googleClientId: process.env.GOOGLE_CLIENT_ID || null,
     maxConnsPerIp: int('MAX_WS_CONNS_PER_IP', 20, 1, 10_000),
+    webDir: process.env.WEB_DIR ? resolve(process.env.WEB_DIR) : null,
     cookieSecure: process.env.COOKIE_SECURE ? process.env.COOKIE_SECURE === 'true' : process.env.NODE_ENV === 'production',
   }
 }
