@@ -564,3 +564,7 @@ body:has(.game-screen) {
 }
 
 .game-left > :only-child { margin-top: auto; }
+
+/* captured pieces: top tray hugs the left edge of the board, bottom tray the right edge */
+.game-center > :first-child { justify-content: flex-start; }
+.game-center > :last-child { justify-content: flex-end; }
