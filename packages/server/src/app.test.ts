@@ -117,3 +117,47 @@ describe('static frontend', () => {
     }
   })
 })
+
+describe('separate frontend origin (CORS)', () => {
+  const APP = 'https://app.example.com'
+  let split: FastifyInstance
+  beforeAll(async () => {
+    split = await buildApp({ config: { ...config, allowedOrigins: [APP] }, searcher })
+  })
+  afterAll(() => split.close())
+
+  it('answers the preflight for the allowed frontend with credentials', async () => {
+    const res = await split.inject({
+      method: 'OPTIONS', url: '/api/bestmove',
+      headers: { origin: APP, 'access-control-request-method': 'POST', 'access-control-request-headers': 'content-type' },
+    })
+    expect(res.statusCode).toBe(204)
+    expect(res.headers['access-control-allow-origin']).toBe(APP)
+    expect(res.headers['access-control-allow-credentials']).toBe('true')
+    expect(res.headers['access-control-allow-headers']).toMatch(/content-type/i)
+  })
+
+  it('lets the allowed frontend call the API and read the guest cookie response', async () => {
+    handler = async () => [{ move: 'h2e2', score: 0, depth: 1 }]
+    const res = await split.inject({
+      method: 'POST', url: '/api/bestmove', headers: { origin: APP }, payload: { fen: START_FEN, level: 1 },
+    })
+    expect(res.statusCode).toBe(200)
+    expect(res.headers['access-control-allow-origin']).toBe(APP)
+    const me = await split.inject({ url: '/api/auth/me', headers: { origin: APP } })
+    expect(me.headers['access-control-allow-credentials']).toBe('true')
+    expect(me.headers['set-cookie']).toMatch(/gid=.*SameSite=Lax/)
+  })
+
+  it('gives other origins no CORS grant, and refuses their writes', async () => {
+    const pre = await split.inject({
+      method: 'OPTIONS', url: '/api/bestmove',
+      headers: { origin: 'https://evil.example', 'access-control-request-method': 'POST' },
+    })
+    expect(pre.headers['access-control-allow-origin']).toBeUndefined()
+    const write = await split.inject({
+      method: 'POST', url: '/api/bestmove', headers: { origin: 'https://evil.example' }, payload: { fen: START_FEN, level: 1 },
+    })
+    expect(write.statusCode).toBe(403)
+  })
+})
