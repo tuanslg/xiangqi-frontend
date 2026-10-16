@@ -118,17 +118,7 @@ export function CoupGame() {
       : `${ai ? (turn === playerColor ? 'Lượt của bạn' : 'Lượt của máy') : `Lượt của ${colorName}`}${inCheck ? ' — Chiếu tướng!' : ''}`
 
   return (
-    <main className="game-screen mx-auto flex max-w-3xl flex-col items-center gap-2 p-3">
-      <div className="flex w-full max-w-[600px] items-center justify-between">
-        <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
-        <div className="text-base font-medium" aria-live="polite">
-          {status}
-        </div>
-      </div>
-      <div className="w-full max-w-[600px]">
-        <LostTray pieces={lost[top]} color={top} />
-      </div>
-
+    <main className="game-screen">
       <div className="game-board">
         <CoupBoard />
         {winner && (
@@ -151,31 +141,43 @@ export function CoupGame() {
         )}
       </div>
 
-      <div className="w-full max-w-[600px]">
-        <LostTray pieces={lost[bottom]} color={bottom} />
-      </div>
-
-      <div className="flex w-full max-w-[600px] items-center justify-between">
-        <div className="flex gap-3">
-          <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
-            ☰
-          </button>
-          <button
-            className="round-btn"
-            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-            onClick={() => {
-              setMuted(!muted)
-              setMutedState(!muted)
-            }}
-          >
-            {muted ? '🔇' : '🔊'}
-          </button>
-          <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
-            ↻
-          </button>
+      <aside className="game-side">
+        <div className="flex w-full max-w-[600px] items-center justify-between">
+          <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
+          <div className="text-base font-medium" aria-live="polite">
+            {status}
+          </div>
         </div>
-        <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
-      </div>
+        <div className="w-full max-w-[600px]">
+          <LostTray pieces={lost[top]} color={top} />
+        </div>
+
+        <div className="w-full max-w-[600px]">
+          <LostTray pieces={lost[bottom]} color={bottom} />
+        </div>
+
+        <div className="flex w-full max-w-[600px] items-center justify-between">
+          <div className="flex gap-3">
+            <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
+              ☰
+            </button>
+            <button
+              className="round-btn"
+              aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+              onClick={() => {
+                setMuted(!muted)
+                setMutedState(!muted)
+              }}
+            >
+              {muted ? '🔇' : '🔊'}
+            </button>
+            <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
+              ↻
+            </button>
+          </div>
+          <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
+        </div>
+      </aside>
     </main>
   )
 }

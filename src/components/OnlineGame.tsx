@@ -125,92 +125,94 @@ export function OnlineGame() {
         : `${myTurn ? 'Lượt của bạn' : `Lượt của ${oppSeat?.name ?? 'đối thủ'}`}${inCheck ? ' — Chiếu tướng!' : ''}`
 
   return (
-    <main className="game-screen mx-auto flex max-w-3xl flex-col items-center gap-2 p-3">
-      {(notice || status === 'reconnecting') && (
-        <div role="alert" className="flex w-full max-w-[600px] items-center justify-between rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
-          <span>{status === 'reconnecting' ? 'Mất kết nối, đang thử kết nối lại…' : notice}</span>
-          {notice && <button className="underline" onClick={dismissNotice}>Đóng</button>}
-        </div>
-      )}
-
-      <div className="flex w-full max-w-[600px] items-center justify-between gap-2">
-        <PlayerBar
-          name={oppSeat?.name ?? '…'}
-          color={opp}
-          active={playing && room.turn === opp}
-          extra={oppSeat && !oppSeat.online && playing ? <span className="text-xs text-amber-300">mất kết nối</span> : null}
-        />
-        <Clock color={opp} />
-      </div>
-      <div className="w-full max-w-[600px]">
-        <Tray board={board} color={opp} />
-      </div>
-
+    <main className="game-screen">
       <div className="game-board">
         <Board />
         {room.status === 'waiting' && <WaitingCard />}
         {room.status === 'finished' && room.result && <ResultCard />}
       </div>
 
-      <div className="w-full max-w-[600px]">
-        <Tray board={board} color={me} />
-      </div>
+      <aside className="game-side">
+        {(notice || status === 'reconnecting') && (
+          <div role="alert" className="flex w-full max-w-[600px] items-center justify-between rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
+            <span>{status === 'reconnecting' ? 'Mất kết nối, đang thử kết nối lại…' : notice}</span>
+            {notice && <button className="underline" onClick={dismissNotice}>Đóng</button>}
+          </div>
+        )}
 
-      <div className="w-full max-w-[600px] text-center text-base font-medium" aria-live="polite">{statusText}</div>
+        <div className="flex w-full max-w-[600px] items-center justify-between gap-2">
+          <PlayerBar
+            name={oppSeat?.name ?? '…'}
+            color={opp}
+            active={playing && room.turn === opp}
+            extra={oppSeat && !oppSeat.online && playing ? <span className="text-xs text-amber-300">mất kết nối</span> : null}
+          />
+          <Clock color={opp} />
+        </div>
+        <div className="w-full max-w-[600px]">
+          <Tray board={board} color={opp} />
+        </div>
 
-      {offerFromOpponent && playing && (
-        <div className="flex w-full max-w-[600px] items-center justify-between rounded bg-[#fff6dc] px-3 py-2 text-neutral-900">
-          <span>Đối thủ xin hòa</span>
-          <span className="flex gap-2">
-            <button className="rounded bg-green-700 px-3 py-1 text-white" onClick={() => draw('accept')}>Đồng ý</button>
-            <button className="rounded bg-neutral-700 px-3 py-1 text-white" onClick={() => draw('decline')}>Từ chối</button>
-          </span>
+        <div className="w-full max-w-[600px]">
+          <Tray board={board} color={me} />
         </div>
-      )}
 
-      <div className="flex w-full max-w-[600px] items-center justify-between gap-2">
-        <div className="flex items-center gap-3">
-          <button
-            className="round-btn"
-            aria-label={playing ? 'Hãy đầu hàng trước khi rời ván' : 'Về menu'}
-            disabled={playing}
-            onClick={leave}
-          >
-            ☰
-          </button>
-          <button
-            className="round-btn"
-            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-            onClick={() => {
-              setMuted(!muted)
-              setMutedState(!muted)
-            }}
-          >
-            {muted ? '🔇' : '🔊'}
-          </button>
-          {playing && (
-            <>
-              <button
-                className="rounded bg-[#fff6dc] px-3 py-2 text-sm font-medium text-neutral-900 disabled:opacity-50"
-                disabled={room.moveCount < 2 || offeredByMe}
-                onClick={() => draw('offer')}
-              >
-                {offeredByMe ? 'Đã xin hòa…' : 'Xin hòa'}
-              </button>
-              <button
-                className="rounded bg-red-800 px-3 py-2 text-sm font-medium text-white"
-                onClick={() => (confirmResign ? resign() : setConfirmKey(`${room.moveCount}:${room.status}`))}
-              >
-                {confirmResign ? 'Chắc chắn đầu hàng?' : 'Đầu hàng'}
-              </button>
-            </>
-          )}
+        <div className="w-full max-w-[600px] text-center text-base font-medium" aria-live="polite">{statusText}</div>
+
+        {offerFromOpponent && playing && (
+          <div className="flex w-full max-w-[600px] items-center justify-between rounded bg-[#fff6dc] px-3 py-2 text-neutral-900">
+            <span>Đối thủ xin hòa</span>
+            <span className="flex gap-2">
+              <button className="rounded bg-green-700 px-3 py-1 text-white" onClick={() => draw('accept')}>Đồng ý</button>
+              <button className="rounded bg-neutral-700 px-3 py-1 text-white" onClick={() => draw('decline')}>Từ chối</button>
+            </span>
+          </div>
+        )}
+
+        <div className="flex w-full max-w-[600px] items-center justify-between gap-2">
+          <div className="flex items-center gap-3">
+            <button
+              className="round-btn"
+              aria-label={playing ? 'Hãy đầu hàng trước khi rời ván' : 'Về menu'}
+              disabled={playing}
+              onClick={leave}
+            >
+              ☰
+            </button>
+            <button
+              className="round-btn"
+              aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+              onClick={() => {
+                setMuted(!muted)
+                setMutedState(!muted)
+              }}
+            >
+              {muted ? '🔇' : '🔊'}
+            </button>
+            {playing && (
+              <>
+                <button
+                  className="rounded bg-[#fff6dc] px-3 py-2 text-sm font-medium text-neutral-900 disabled:opacity-50"
+                  disabled={room.moveCount < 2 || offeredByMe}
+                  onClick={() => draw('offer')}
+                >
+                  {offeredByMe ? 'Đã xin hòa…' : 'Xin hòa'}
+                </button>
+                <button
+                  className="rounded bg-red-800 px-3 py-2 text-sm font-medium text-white"
+                  onClick={() => (confirmResign ? resign() : setConfirmKey(`${room.moveCount}:${room.status}`))}
+                >
+                  {confirmResign ? 'Chắc chắn đầu hàng?' : 'Đầu hàng'}
+                </button>
+              </>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock color={me} />
+            <PlayerBar name={mySeat?.name ?? 'Bạn'} color={me} active={myTurn} />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Clock color={me} />
-          <PlayerBar name={mySeat?.name ?? 'Bạn'} color={me} active={myTurn} />
-        </div>
-      </div>
+      </aside>
     </main>
   )
 }
