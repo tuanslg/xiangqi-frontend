@@ -1,4 +1,5 @@
 import { uciToMove } from '@xiangqi/shared'
+import { apiFetch } from './base'
 import type { Move } from '@xiangqi/shared'
 
 export const LEVELS = [
@@ -19,7 +20,7 @@ export class EngineUnavailableError extends Error {}
 export async function fetchBestMove(fen: string, level: LevelId): Promise<Move> {
   let res: Response
   try {
-    res = await fetch('/api/bestmove', {
+    res = await apiFetch('/api/bestmove', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ fen, level }),

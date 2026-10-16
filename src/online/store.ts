@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { ClientMessage, Color, Move, RoomSnapshot, ServerMessage, TimeControlId } from '@xiangqi/shared'
+import { wsUrl } from '../api/base'
 import { playLose, playWin } from '../audio/sound'
 import { useAuth } from '../auth/store'
 import { useGame } from '../store/game'
@@ -66,8 +67,6 @@ export const shouldResume = (): boolean => {
 }
 
 export const useOnline = create<OnlineState>((set, get) => {
-  const wsUrl = () => `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws`
-
   const apply = (room: RoomSnapshot | null) => {
     const prev = get().room
     set({ room, roomAt: performance.now() })

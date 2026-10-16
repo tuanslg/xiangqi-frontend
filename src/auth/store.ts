@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { apiFetch } from '../api/base'
 
 export interface AuthUser {
   id: string
@@ -19,7 +20,7 @@ interface AuthState {
 }
 
 async function getJson<T>(url: string): Promise<T> {
-  const res = await fetch(url)
+  const res = await apiFetch(url)
   if (!res.ok) throw new Error(`${url} -> ${res.status}`)
   return (await res.json()) as T
 }
@@ -46,7 +47,7 @@ export const useAuth = create<AuthState>((set, get) => ({
 
   signIn: async (credential) => {
     try {
-      const res = await fetch('/api/auth/google', {
+      const res = await apiFetch('/api/auth/google', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ credential }),
@@ -64,6 +65,6 @@ export const useAuth = create<AuthState>((set, get) => ({
   signOut: async () => {
     set({ user: null }) // optimistic: the cookie is cleared even if the request fails below
     window.google?.accounts.id.disableAutoSelect()
-    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+    await apiFetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
   },
 }))

@@ -1,3 +1,5 @@
+import { apiFetch } from '../api/base'
+
 const GSI_SRC = 'https://accounts.google.com/gsi/client'
 
 let scriptLoad: Promise<void> | null = null
@@ -25,7 +27,7 @@ function loadScript(): Promise<void> {
 export function initGoogle(clientId: string, onCredential: (credential: string) => void): Promise<void> {
   initialized ??= (async () => {
     await loadScript()
-    const res = await fetch('/api/auth/nonce')
+    const res = await apiFetch('/api/auth/nonce')
     if (!res.ok) throw new Error('Không lấy được nonce đăng nhập')
     const { nonce } = (await res.json()) as { nonce: string }
     window.google!.accounts.id.initialize({
