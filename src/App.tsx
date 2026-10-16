@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { isMuted, setMuted } from './audio/sound'
 import { useAuth } from './auth/store'
 import { Board } from './components/Board'
+import { CoupGame } from './components/CoupGame'
+import { useCoup } from './store/coup'
 import { Menu } from './components/Menu'
 import { OnlineGame } from './components/OnlineGame'
 import { shouldResume, useOnline } from './online/store'
@@ -12,6 +14,7 @@ import { selectInCheck, useGame } from './store/game'
 export default function App() {
   const screen = useGame((s) => s.screen)
   const inRoom = useOnline((s) => s.room !== null)
+  const coupActive = useCoup((s) => s.active)
   useEffect(() => {
     void useAuth.getState().init()
     // Invite link (?room=CODE): join straight away. Otherwise resume a game that was in progress.
@@ -22,6 +25,7 @@ export default function App() {
     } else if (shouldResume()) useOnline.getState().connect()
   }, [])
   if (inRoom) return <OnlineGame />
+  if (coupActive) return <CoupGame />
   return screen === 'menu' ? <Menu /> : <GameScreen />
 }
 
