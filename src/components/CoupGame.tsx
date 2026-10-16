@@ -5,7 +5,6 @@ import { isMuted, setMuted } from '../audio/sound'
 import { selectCoupInCheck, useCoup } from '../store/coup'
 import { CELL, x, y } from './boardGeometry'
 import { BoardSvg } from './BoardSvg'
-import { PlayerBar } from './GameParts'
 import { Piece3D } from './PieceDisc'
 import { GLYPH_FONT, LABEL } from './pieceLabels'
 
@@ -104,7 +103,6 @@ export function CoupGame() {
   const ai = mode === 'ai'
   const top: Color = ai ? (playerColor === 'red' ? 'black' : 'red') : 'black'
   const bottom: Color = ai ? playerColor : 'red'
-  const name = (c: Color) => (ai ? (c === playerColor ? 'Bạn' : 'Máy') : c === 'red' ? 'Đỏ' : 'Đen')
   const colorName = turn === 'red' ? 'Đỏ' : 'Đen'
 
   const status = winner
@@ -120,7 +118,6 @@ export function CoupGame() {
   return (
     <main className="game-screen">
       <aside className="game-left">
-        <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
         <div className="flex gap-3">
           <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
             ☰
@@ -171,7 +168,6 @@ export function CoupGame() {
         <div className="text-base font-medium" aria-live="polite">
           {status}
         </div>
-        <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
       </aside>
     </main>
   )

@@ -7,7 +7,7 @@ import { useCoup } from './store/coup'
 import { Menu } from './components/Menu'
 import { OnlineGame } from './components/OnlineGame'
 import { shouldResume, useOnline } from './online/store'
-import { PlayerBar, Tray } from './components/GameParts'
+import { Tray } from './components/GameParts'
 import type { Color } from '@xiangqi/shared'
 import { selectInCheck, useGame } from './store/game'
 
@@ -46,7 +46,6 @@ function GameScreen() {
   return (
     <main className="game-screen">
       <aside className="game-left">
-        <PlayerBar name="Máy" color={opponent} active={!winner && turn === opponent} />
         <div className="flex gap-3">
           <button className="round-btn" aria-label="Về menu" onClick={goMenu}>
             ☰
@@ -98,7 +97,6 @@ function GameScreen() {
         <div className="text-base font-medium" aria-live="polite">
           {status}
         </div>
-        <PlayerBar name="Bạn" color={playerColor} active={!winner && turn === playerColor} />
       </aside>
     </main>
   )

@@ -562,3 +562,5 @@ body:has(.game-screen) {
   .game-left { order: 2; }
   .game-right { order: 3; }
 }
+
+.game-left > :only-child { margin-top: auto; }
