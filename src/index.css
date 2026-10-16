@@ -169,10 +169,12 @@ body {
 }
 
 .lobby {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   display: grid;
   place-items: center;
   padding: 12px;
+  overflow: hidden;
   background:
     radial-gradient(ellipse at 15% 20%, rgba(120, 170, 150, 0.35), transparent 45%),
     radial-gradient(ellipse at 90% 80%, rgba(40, 80, 90, 0.5), transparent 50%),
@@ -182,12 +184,13 @@ body {
 .lobby-frame {
   position: relative;
   width: min(1100px, 100%);
-  min-height: min(760px, calc(100vh - 24px));
+  height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
-  padding: 16px 28px 28px;
+  padding: 12px 28px 16px;
   border-radius: 10px;
   overflow: hidden;
   border: 6px solid #6b4423;
@@ -275,27 +278,35 @@ body {
 .lobby-hero {
   position: relative;
   z-index: 1;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 .lobby-hero-title {
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(28px, min(6vw, 8vh), 64px);
   letter-spacing: 4px;
   line-height: 1;
 }
 .lobby-hero-board {
-  width: min(340px, 56vw, 42vh);
+  flex: 1;
+  min-height: 0;
+  max-width: 100%;
   perspective: 900px;
 }
 .lobby-hero-board > svg {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
   transform: rotateX(42deg) scale(1.05);
   transform-origin: 50% 100%;
   filter: drop-shadow(0 22px 22px rgba(0, 0, 0, 0.5));
   margin-bottom: -40px;
 }
 .lobby-hero-caption {
+  display: none;
   padding: 4px 22px;
   font-family: 'LXGW WenKai TC', serif;
   font-size: 18px;
@@ -334,7 +345,7 @@ body {
   filter: saturate(0.6);
 }
 .medal-title {
-  font-size: clamp(26px, 4vw, 42px);
+  font-size: clamp(22px, min(4vw, 5vh), 42px);
   line-height: 1.1;
 }
 .medal-sub {
@@ -348,10 +359,11 @@ body {
 .medal {
   display: grid;
   place-items: center;
-  width: clamp(110px, min(21vw, 24vh), 220px);
+  width: clamp(84px, min(21vw, 20vh), 200px);
   aspect-ratio: 1;
   border-radius: 9999px;
   padding: 8px;
+  container-type: size;
   box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
 }
 .medal-xiangqi { background: conic-gradient(from 20deg, #3a2b4a, #8a6fa0, #3a2b4a, #6b4f80, #3a2b4a); }
@@ -382,8 +394,8 @@ body {
   border: 3px solid #a67a3c;
   box-shadow: 0 4px 0 #8d5f2d, 0 8px 10px rgba(0, 0, 0, 0.45);
 }
-.medal-disc-back { width: 42%; height: 42%; left: 12%; top: 34%; font-size: clamp(24px, 4.5vw, 46px); color: #141414; }
-.medal-disc-front { width: 56%; height: 56%; right: 10%; top: 20%; font-size: clamp(34px, 6.5vw, 66px); }
+.medal-disc-back { width: 42%; height: 42%; left: 12%; top: 34%; font-size: 18cqw; color: #141414; }
+.medal-disc-front { width: 56%; height: 56%; right: 10%; top: 20%; font-size: 26cqw; }
 .medal-disc-hidden {
   background: radial-gradient(circle at 38% 32%, #d9b377, #a8803f);
 }
@@ -397,10 +409,10 @@ body {
 }
 .medal-more {
   font-family: 'LXGW WenKai TC', serif;
-  font-size: clamp(40px, 7vw, 76px);
+  font-size: 30cqw;
   font-weight: 800;
   color: #f0c35a;
-  -webkit-text-stroke: 2px #4a2f16;
+  -webkit-text-stroke: 1px #4a2f16;
 }
 .medal-more.medal { background: none; }
 .medal-inner:has(.medal-more) {
