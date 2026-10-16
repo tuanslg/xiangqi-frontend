@@ -47,7 +47,24 @@ function GameScreen() {
     <main className="game-screen">
       <aside className="game-left">
         <PlayerBar name="Máy" color={opponent} active={!winner && turn === opponent} />
-        <PlayerBar name="Bạn" color={playerColor} active={!winner && turn === playerColor} />
+        <div className="flex gap-3">
+          <button className="round-btn" aria-label="Về menu" onClick={goMenu}>
+            ☰
+          </button>
+          <button
+            className="round-btn"
+            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+            onClick={() => {
+              setMuted(!muted)
+              setMutedState(!muted)
+            }}
+          >
+            {muted ? '🔇' : '🔊'}
+          </button>
+          <button className="round-btn" aria-label="Ván mới" onClick={() => reset()}>
+            ↻
+          </button>
+        </div>
       </aside>
 
       <div className="game-center">
@@ -81,24 +98,7 @@ function GameScreen() {
         <div className="text-base font-medium" aria-live="polite">
           {status}
         </div>
-        <div className="flex gap-3">
-          <button className="round-btn" aria-label="Về menu" onClick={goMenu}>
-            ☰
-          </button>
-          <button
-            className="round-btn"
-            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-            onClick={() => {
-              setMuted(!muted)
-              setMutedState(!muted)
-            }}
-          >
-            {muted ? '🔇' : '🔊'}
-          </button>
-          <button className="round-btn" aria-label="Ván mới" onClick={() => reset()}>
-            ↻
-          </button>
-        </div>
+        <PlayerBar name="Bạn" color={playerColor} active={!winner && turn === playerColor} />
       </aside>
     </main>
   )

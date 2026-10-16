@@ -136,42 +136,6 @@ export function OnlineGame() {
           />
           <Clock color={opp} />
         </div>
-        <div className="flex flex-col items-start gap-2">
-          <Clock color={me} />
-          <PlayerBar name={mySeat?.name ?? 'Bạn'} color={me} active={myTurn} />
-        </div>
-      </aside>
-
-      <div className="game-center">
-        <Tray board={board} color={opp} />
-        <div className="game-board">
-          <Board />
-          {room.status === 'waiting' && <WaitingCard />}
-          {room.status === 'finished' && room.result && <ResultCard />}
-        </div>
-        <Tray board={board} color={me} />
-      </div>
-
-      <aside className="game-right">
-        <div className="flex flex-col gap-3">
-          {(notice || status === 'reconnecting') && (
-            <div role="alert" className="flex items-center justify-between gap-2 rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
-              <span>{status === 'reconnecting' ? 'Mất kết nối, đang thử kết nối lại…' : notice}</span>
-              {notice && <button className="underline" onClick={dismissNotice}>Đóng</button>}
-            </div>
-          )}
-          <div className="text-base font-medium" aria-live="polite">{statusText}</div>
-          {offerFromOpponent && playing && (
-            <div className="flex flex-col gap-2 rounded bg-[#fff6dc] px-3 py-2 text-neutral-900">
-              <span>Đối thủ xin hòa</span>
-              <span className="flex gap-2">
-                <button className="rounded bg-green-700 px-3 py-1 text-white" onClick={() => draw('accept')}>Đồng ý</button>
-                <button className="rounded bg-neutral-700 px-3 py-1 text-white" onClick={() => draw('decline')}>Từ chối</button>
-              </span>
-            </div>
-          )}
-        </div>
-
         <div className="flex flex-col gap-3">
           {playing && (
             <>
@@ -210,6 +174,42 @@ export function OnlineGame() {
               {muted ? '🔇' : '🔊'}
             </button>
           </div>
+        </div>
+      </aside>
+
+      <div className="game-center">
+        <Tray board={board} color={opp} />
+        <div className="game-board">
+          <Board />
+          {room.status === 'waiting' && <WaitingCard />}
+          {room.status === 'finished' && room.result && <ResultCard />}
+        </div>
+        <Tray board={board} color={me} />
+      </div>
+
+      <aside className="game-right">
+        <div className="flex flex-col gap-3">
+          {(notice || status === 'reconnecting') && (
+            <div role="alert" className="flex items-center justify-between gap-2 rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
+              <span>{status === 'reconnecting' ? 'Mất kết nối, đang thử kết nối lại…' : notice}</span>
+              {notice && <button className="underline" onClick={dismissNotice}>Đóng</button>}
+            </div>
+          )}
+          <div className="text-base font-medium" aria-live="polite">{statusText}</div>
+          {offerFromOpponent && playing && (
+            <div className="flex flex-col gap-2 rounded bg-[#fff6dc] px-3 py-2 text-neutral-900">
+              <span>Đối thủ xin hòa</span>
+              <span className="flex gap-2">
+                <button className="rounded bg-green-700 px-3 py-1 text-white" onClick={() => draw('accept')}>Đồng ý</button>
+                <button className="rounded bg-neutral-700 px-3 py-1 text-white" onClick={() => draw('decline')}>Từ chối</button>
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <Clock color={me} />
+          <PlayerBar name={mySeat?.name ?? 'Bạn'} color={me} active={myTurn} />
         </div>
       </aside>
     </main>

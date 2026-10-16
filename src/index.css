@@ -519,8 +519,8 @@ body:has(.lobby) {
   max-width: 260px;
   padding: 4px 0;
 }
-.game-left { justify-self: end; align-items: flex-start; }
-.game-right { justify-self: start; }
+.game-left { justify-self: end; align-items: flex-end; text-align: right; }
+.game-right { justify-self: start; align-items: flex-start; }
 html:has(.game-screen),
 body:has(.game-screen) {
   height: 100%;

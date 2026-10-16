@@ -121,7 +121,24 @@ export function CoupGame() {
     <main className="game-screen">
       <aside className="game-left">
         <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
-        <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
+        <div className="flex gap-3">
+          <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
+            ☰
+          </button>
+          <button
+            className="round-btn"
+            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+            onClick={() => {
+              setMuted(!muted)
+              setMutedState(!muted)
+            }}
+          >
+            {muted ? '🔇' : '🔊'}
+          </button>
+          <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
+            ↻
+          </button>
+        </div>
       </aside>
 
       <div className="game-center">
@@ -154,24 +171,7 @@ export function CoupGame() {
         <div className="text-base font-medium" aria-live="polite">
           {status}
         </div>
-        <div className="flex gap-3">
-          <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
-            ☰
-          </button>
-          <button
-            className="round-btn"
-            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-            onClick={() => {
-              setMuted(!muted)
-              setMutedState(!muted)
-            }}
-          >
-            {muted ? '🔇' : '🔊'}
-          </button>
-          <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
-            ↻
-          </button>
-        </div>
+        <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
       </aside>
     </main>
   )
