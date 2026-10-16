@@ -469,3 +469,28 @@ body:has(.lobby) {
   height: 100%;
   overflow: hidden;
 }
+
+/* game screens: board shrinks to the space left between the player bars, so nothing scrolls */
+.game-screen {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+.game-board {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  max-width: 100%;
+  aspect-ratio: 616 / 696;
+}
+.game-board > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+html:has(.game-screen),
+body:has(.game-screen) {
+  height: 100%;
+  overflow: hidden;
+}

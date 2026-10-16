@@ -118,7 +118,7 @@ export function CoupGame() {
       : `${ai ? (turn === playerColor ? 'Lượt của bạn' : 'Lượt của máy') : `Lượt của ${colorName}`}${inCheck ? ' — Chiếu tướng!' : ''}`
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col items-center gap-3 p-4">
+    <main className="game-screen mx-auto flex max-w-3xl flex-col items-center gap-2 p-3">
       <div className="flex w-full max-w-[600px] items-center justify-between">
         <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
         <div className="text-base font-medium" aria-live="polite">
@@ -129,7 +129,7 @@ export function CoupGame() {
         <LostTray pieces={lost[top]} color={top} />
       </div>
 
-      <div className="relative w-full max-w-[600px]">
+      <div className="game-board">
         <CoupBoard />
         {winner && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/45">

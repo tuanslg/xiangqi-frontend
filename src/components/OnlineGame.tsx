@@ -125,7 +125,7 @@ export function OnlineGame() {
         : `${myTurn ? 'Lượt của bạn' : `Lượt của ${oppSeat?.name ?? 'đối thủ'}`}${inCheck ? ' — Chiếu tướng!' : ''}`
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col items-center gap-3 p-4">
+    <main className="game-screen mx-auto flex max-w-3xl flex-col items-center gap-2 p-3">
       {(notice || status === 'reconnecting') && (
         <div role="alert" className="flex w-full max-w-[600px] items-center justify-between rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
           <span>{status === 'reconnecting' ? 'Mất kết nối, đang thử kết nối lại…' : notice}</span>
@@ -146,7 +146,7 @@ export function OnlineGame() {
         <Tray board={board} color={opp} />
       </div>
 
-      <div className="relative w-full max-w-[600px]">
+      <div className="game-board">
         <Board />
         {room.status === 'waiting' && <WaitingCard />}
         {room.status === 'finished' && room.result && <ResultCard />}

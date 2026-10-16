@@ -44,7 +44,7 @@ function GameScreen() {
       : `${turn === playerColor ? 'Lượt của bạn' : 'Lượt của máy'}${inCheck ? ' — Chiếu tướng!' : ''}`
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col items-center gap-3 p-4">
+    <main className="game-screen mx-auto flex max-w-3xl flex-col items-center gap-2 p-3">
       <div className="flex w-full max-w-[600px] items-center justify-between">
         <PlayerBar name="Máy" color={opponent} active={!winner && turn === opponent} />
         <div className="text-base font-medium" aria-live="polite">
@@ -56,7 +56,7 @@ function GameScreen() {
         <Tray board={board} color={opponent} />
       </div>
 
-      <div className="relative w-full max-w-[600px]">
+      <div className="game-board">
         <Board />
         {winner && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/45">
