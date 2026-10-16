@@ -462,3 +462,10 @@ body {
   .lobby-avatar { width: 52px; height: 52px; font-size: 28px; }
   .lobby-hero-board > svg { transform: rotateX(38deg); margin-bottom: -24px; }
 }
+
+/* the lobby always fits the window, so the page itself never scrolls */
+html:has(.lobby),
+body:has(.lobby) {
+  height: 100%;
+  overflow: hidden;
+}
