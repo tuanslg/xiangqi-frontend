@@ -119,63 +119,58 @@ export function CoupGame() {
 
   return (
     <main className="game-screen">
-      <div className="game-board">
-        <CoupBoard />
-        {winner && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/45">
-            <div className="result-pop flex flex-col items-center gap-4 rounded-2xl bg-[#fff6dc] px-10 py-8 text-neutral-900 shadow-2xl">
-              <div className="text-5xl">{!ai || winner === playerColor ? '🏆' : '💀'}</div>
-              <div className={`text-3xl font-bold ${!ai || winner === playerColor ? 'text-green-700' : 'text-red-700'}`}>
-                {ai ? (winner === playerColor ? 'Bạn thắng!' : 'Bạn thua!') : `${winner === 'red' ? 'Đỏ' : 'Đen'} thắng!`}
-              </div>
-              <div className="flex gap-3">
-                <button className="rounded bg-red-700 px-4 py-2 text-white" onClick={() => start(mode, playerColor)}>
-                  Chơi lại
-                </button>
-                <button className="rounded bg-neutral-800 px-4 py-2 text-white" onClick={exit}>
-                  Về sảnh
-                </button>
+      <aside className="game-left">
+        <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
+        <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
+      </aside>
+
+      <div className="game-center">
+        <LostTray pieces={lost[top]} color={top} />
+        <div className="game-board">
+          <CoupBoard />
+          {winner && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/45">
+              <div className="result-pop flex flex-col items-center gap-4 rounded-2xl bg-[#fff6dc] px-10 py-8 text-neutral-900 shadow-2xl">
+                <div className="text-5xl">{!ai || winner === playerColor ? '🏆' : '💀'}</div>
+                <div className={`text-3xl font-bold ${!ai || winner === playerColor ? 'text-green-700' : 'text-red-700'}`}>
+                  {ai ? (winner === playerColor ? 'Bạn thắng!' : 'Bạn thua!') : `${winner === 'red' ? 'Đỏ' : 'Đen'} thắng!`}
+                </div>
+                <div className="flex gap-3">
+                  <button className="rounded bg-red-700 px-4 py-2 text-white" onClick={() => start(mode, playerColor)}>
+                    Chơi lại
+                  </button>
+                  <button className="rounded bg-neutral-800 px-4 py-2 text-white" onClick={exit}>
+                    Về sảnh
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <LostTray pieces={lost[bottom]} color={bottom} />
       </div>
 
-      <aside className="game-side">
-        <div className="flex w-full max-w-[600px] items-center justify-between">
-          <PlayerBar name={name(top)} color={top} active={!winner && turn === top} />
-          <div className="text-base font-medium" aria-live="polite">
-            {status}
-          </div>
+      <aside className="game-right">
+        <div className="text-base font-medium" aria-live="polite">
+          {status}
         </div>
-        <div className="w-full max-w-[600px]">
-          <LostTray pieces={lost[top]} color={top} />
-        </div>
-
-        <div className="w-full max-w-[600px]">
-          <LostTray pieces={lost[bottom]} color={bottom} />
-        </div>
-
-        <div className="flex w-full max-w-[600px] items-center justify-between">
-          <div className="flex gap-3">
-            <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
-              ☰
-            </button>
-            <button
-              className="round-btn"
-              aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-              onClick={() => {
-                setMuted(!muted)
-                setMutedState(!muted)
-              }}
-            >
-              {muted ? '🔇' : '🔊'}
-            </button>
-            <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
-              ↻
-            </button>
-          </div>
-          <PlayerBar name={name(bottom)} color={bottom} active={!winner && turn === bottom} />
+        <div className="flex gap-3">
+          <button className="round-btn" aria-label="Về sảnh" onClick={exit}>
+            ☰
+          </button>
+          <button
+            className="round-btn"
+            aria-label={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+            onClick={() => {
+              setMuted(!muted)
+              setMutedState(!muted)
+            }}
+          >
+            {muted ? '🔇' : '🔊'}
+          </button>
+          <button className="round-btn" aria-label="Ván mới" onClick={() => start(mode, playerColor)}>
+            ↻
+          </button>
         </div>
       </aside>
     </main>
